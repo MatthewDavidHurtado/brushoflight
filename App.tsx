@@ -520,8 +520,68 @@ const Navbar = ({ onOpenPortal, onNavigate }: { onOpenPortal: () => void, onNavi
 };
 
 const App: React.FC = () => {
+  const [isAuthenticated, setIsAuthenticated] = useState(() => {
+    return localStorage.getItem('brush-of-light-auth') === 'true';
+  });
+  const [password, setPassword] = useState('');
+  const [error, setError] = useState('');
   const [isPortalOpen, setIsPortalOpen] = useState(false);
   const [currentPage, setCurrentPage] = useState<PageView>('HOME');
+
+  const handlePasswordSubmit = (e: React.FormEvent) => {
+    e.preventDefault();
+    if (password === 'ARTIST') {
+      setIsAuthenticated(true);
+      localStorage.setItem('brush-of-light-auth', 'true');
+      setError('');
+    } else {
+      setError('Incorrect password');
+      setPassword('');
+    }
+  };
+
+  if (!isAuthenticated) {
+    return (
+      <div className="min-h-screen flex items-center justify-center bg-gradient-to-br from-stone-50 to-amber-50/30">
+        <div className="w-full max-w-md px-6">
+          <div className="bg-white rounded-3xl shadow-2xl border border-stone-200/50 p-12">
+            <div className="flex justify-center mb-8">
+              <Logo size="md" />
+            </div>
+            <h1 className="text-3xl font-bold text-center mb-2 serif">Brush of Light</h1>
+            <p className="text-center text-stone-600 mb-8 text-sm">Partner Portal Access</p>
+
+            <form onSubmit={handlePasswordSubmit} className="space-y-6">
+              <div>
+                <label htmlFor="password" className="block text-sm font-bold text-stone-700 mb-2 uppercase tracking-widest">
+                  Password
+                </label>
+                <input
+                  id="password"
+                  type="password"
+                  value={password}
+                  onChange={(e) => setPassword(e.target.value)}
+                  className="w-full px-4 py-3 rounded-xl border border-stone-300 focus:border-amber-800 focus:ring-2 focus:ring-amber-800/20 outline-none transition-all"
+                  placeholder="Enter password"
+                  autoFocus
+                />
+                {error && (
+                  <p className="mt-2 text-sm text-red-600">{error}</p>
+                )}
+              </div>
+
+              <button
+                type="submit"
+                className="w-full bg-stone-900 text-white py-4 rounded-xl hover:bg-stone-800 transition-all shadow-lg font-bold uppercase tracking-widest text-sm"
+              >
+                Enter
+              </button>
+            </form>
+          </div>
+        </div>
+      </div>
+    );
+  }
 
   if (currentPage === 'PRIVACY') {
     return <PrivacyPolicy onClose={() => setCurrentPage('HOME')} />;
