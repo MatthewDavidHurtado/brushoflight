@@ -283,6 +283,7 @@ const TermsOfUse = ({ onClose }: { onClose: () => void }) => {
               <p>DBA Brush of Light</p>
               <p>Operated by Ezelle Geldenhuis</p>
               <p>Email: <a href="mailto:ezelle@ezelleart.com" className="text-amber-700 hover:underline font-medium">ezelle@ezelleart.com</a></p>
+              <p>Phone: <a href="tel:+13176672409" className="text-amber-700 hover:underline font-medium">317-667-2409</a></p>
               <p className="text-sm text-stone-600 mt-4">We will respond to all inquiries within 10 business days.</p>
             </div>
           </section>

@@ -292,7 +292,10 @@ const OnboardingPortal = ({ isOpen, onClose }: { isOpen: boolean, onClose: () =>
                 </button>
               </div>
               
-              <p className="mt-6 text-xs text-stone-400 uppercase tracking-widest font-black">ezelle@ezelleart.com</p>
+              <div className="mt-6 space-y-1">
+                <p className="text-xs text-stone-400 uppercase tracking-widest font-black">ezelle@ezelleart.com</p>
+                <p className="text-xs text-stone-400 uppercase tracking-widest font-black">317-667-2409</p>
+              </div>
               
               <div className="mt-20 pt-10 border-t border-stone-100 flex flex-col items-center gap-6">
                 <button 
@@ -586,6 +589,14 @@ const App: React.FC = () => {
              <h2 className="text-white text-4xl font-bold mb-8 serif">Grow Your Business With Beauty.</h2>
              <button onClick={() => setIsPortalOpen(true)} className="bg-white text-stone-900 px-14 py-6 rounded-full font-bold hover:bg-stone-100 shadow-2xl transition-all">Secure Your Territory</button>
              <div className="mt-20 pt-10 border-t border-white/5">
+                <div className="mb-8 space-y-2">
+                  <p className="text-xs text-stone-400">
+                    <a href="mailto:ezelle@ezelleart.com" className="hover:text-amber-400 transition-colors">ezelle@ezelleart.com</a>
+                  </p>
+                  <p className="text-xs text-stone-400">
+                    <a href="tel:+13176672409" className="hover:text-amber-400 transition-colors">317-667-2409</a>
+                  </p>
+                </div>
                 <div className="flex flex-wrap justify-center gap-6 mb-6">
                   <button
                     onClick={() => setCurrentPage('PRIVACY')}
