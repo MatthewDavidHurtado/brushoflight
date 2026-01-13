@@ -63,15 +63,16 @@ const PartnerResources = ({ onClose }: { onClose: () => void }) => {
 
               <div className="flex flex-col sm:flex-row gap-4 mt-8">
                 <a
-                  href="/brush_of_light_memorial_art_contact_consent_form.pdf"
-                  download
+                  href="https://drive.google.com/uc?export=download&id=1er-vOmEsUjg9hfBas49LgtTQh6ikmUDS"
+                  target="_blank"
+                  rel="noopener noreferrer"
                   className="flex-1 bg-stone-900 text-white py-4 px-6 rounded-2xl font-bold hover:bg-stone-800 transition-all flex items-center justify-center gap-3 shadow-lg"
                 >
                   <Download size={20} />
                   Download PDF Form
                 </a>
                 <a
-                  href="/brush_of_light_memorial_art_contact_consent_form.pdf"
+                  href="https://drive.google.com/file/d/1er-vOmEsUjg9hfBas49LgtTQh6ikmUDS/view"
                   target="_blank"
                   rel="noopener noreferrer"
                   className="flex-1 bg-white text-stone-900 border-2 border-stone-300 py-4 px-6 rounded-2xl font-bold hover:border-stone-900 transition-all flex items-center justify-center gap-3"
