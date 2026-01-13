@@ -18,10 +18,11 @@ import {
 } from 'lucide-react';
 import PrivacyPolicy from './PrivacyPolicy';
 import TermsOfUse from './TermsOfUse';
+import PartnerResources from './PartnerResources';
 
 // --- Types ---
 type OnboardingStep = 'IDENTIFY' | 'WELCOME' | 'AGREEMENT' | 'SUCCESS';
-type PageView = 'HOME' | 'PRIVACY' | 'TERMS';
+type PageView = 'HOME' | 'PRIVACY' | 'TERMS' | 'RESOURCES';
 
 interface UserData {
   name: string;
@@ -68,7 +69,7 @@ const BenefitCard = ({ icon: Icon, title, description }: { icon: any, title: str
 
 // --- Onboarding Portal Component ---
 
-const OnboardingPortal = ({ isOpen, onClose }: { isOpen: boolean, onClose: () => void }) => {
+const OnboardingPortal = ({ isOpen, onClose, onNavigateResources }: { isOpen: boolean, onClose: () => void, onNavigateResources: () => void }) => {
   const [step, setStep] = useState<OnboardingStep>('IDENTIFY');
   const [userData, setUserData] = useState<UserData>({ name: '', businessName: '', signature: '' });
 
@@ -153,7 +154,7 @@ const OnboardingPortal = ({ isOpen, onClose }: { isOpen: boolean, onClose: () =>
                     />
                   </div>
                 </div>
-                <button 
+                <button
                   disabled={!userData.name || !userData.businessName}
                   onClick={() => setStep('WELCOME')}
                   className="w-full bg-stone-900 text-white font-bold py-5 rounded-2xl hover:bg-stone-800 transition-all disabled:opacity-50 flex items-center justify-center gap-3 mt-4"
@@ -161,6 +162,18 @@ const OnboardingPortal = ({ isOpen, onClose }: { isOpen: boolean, onClose: () =>
                   Generate Portal Experience
                   <ArrowRight size={20} />
                 </button>
+                <p className="text-center text-xs text-stone-500 mt-4">
+                  Already Completed This Step?{' '}
+                  <button
+                    onClick={() => {
+                      onClose();
+                      onNavigateResources();
+                    }}
+                    className="text-amber-700 hover:text-amber-800 font-bold transition-colors underline"
+                  >
+                    Go to Partner Resources Instead
+                  </button>
+                </p>
               </div>
             </div>
           )}
@@ -418,7 +431,7 @@ const OnboardingPortal = ({ isOpen, onClose }: { isOpen: boolean, onClose: () =>
   );
 };
 
-const Navbar = ({ onOpenPortal }: { onOpenPortal: () => void }) => (
+const Navbar = ({ onOpenPortal, onNavigate }: { onOpenPortal: () => void, onNavigate: (page: PageView) => void }) => (
   <nav className="fixed top-0 left-0 right-0 z-50 bg-white/70 backdrop-blur-xl border-b border-stone-200/50 no-print">
     <div className="max-w-7xl mx-auto px-6 h-20 flex items-center justify-between">
       <div className="flex items-center gap-3">
@@ -428,7 +441,13 @@ const Navbar = ({ onOpenPortal }: { onOpenPortal: () => void }) => (
       <div className="hidden md:flex items-center gap-8 text-xs font-bold text-stone-600 uppercase tracking-widest">
         <a href="#benefits" className="hover:text-amber-800 transition-colors">The Opportunity</a>
         <a href="#how-it-works" className="hover:text-amber-800 transition-colors">Our Process</a>
-        <button 
+        <button
+          onClick={() => onNavigate('RESOURCES')}
+          className="hover:text-amber-800 transition-colors"
+        >
+          Partner Resources
+        </button>
+        <button
           onClick={onOpenPortal}
           className="bg-stone-900 text-white px-6 py-2.5 rounded-full hover:bg-stone-800 transition-all shadow-lg"
         >
@@ -451,11 +470,19 @@ const App: React.FC = () => {
     return <TermsOfUse onClose={() => setCurrentPage('HOME')} />;
   }
 
+  if (currentPage === 'RESOURCES') {
+    return <PartnerResources onClose={() => setCurrentPage('HOME')} />;
+  }
+
   return (
     <div className="min-h-screen selection:bg-amber-100 selection:text-amber-900">
-      <Navbar onOpenPortal={() => setIsPortalOpen(true)} />
+      <Navbar onOpenPortal={() => setIsPortalOpen(true)} onNavigate={setCurrentPage} />
 
-      <OnboardingPortal isOpen={isPortalOpen} onClose={() => setIsPortalOpen(false)} />
+      <OnboardingPortal
+        isOpen={isPortalOpen}
+        onClose={() => setIsPortalOpen(false)}
+        onNavigateResources={() => setCurrentPage('RESOURCES')}
+      />
 
       {/* Landing Page Content */}
       <div className="no-print">
@@ -598,6 +625,13 @@ const App: React.FC = () => {
                   </p>
                 </div>
                 <div className="flex flex-wrap justify-center gap-6 mb-6">
+                  <button
+                    onClick={() => setCurrentPage('RESOURCES')}
+                    className="text-[11px] uppercase tracking-widest font-bold hover:text-amber-400 transition-colors"
+                  >
+                    Partner Resources
+                  </button>
+                  <span className="text-white/20">|</span>
                   <button
                     onClick={() => setCurrentPage('PRIVACY')}
                     className="text-[11px] uppercase tracking-widest font-bold hover:text-amber-400 transition-colors"
