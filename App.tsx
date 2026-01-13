@@ -14,7 +14,8 @@ import {
   CheckCircle2,
   User,
   Building2,
-  RotateCcw
+  RotateCcw,
+  Menu
 } from 'lucide-react';
 import PrivacyPolicy from './PrivacyPolicy';
 import TermsOfUse from './TermsOfUse';
@@ -431,32 +432,92 @@ const OnboardingPortal = ({ isOpen, onClose, onNavigateResources }: { isOpen: bo
   );
 };
 
-const Navbar = ({ onOpenPortal, onNavigate }: { onOpenPortal: () => void, onNavigate: (page: PageView) => void }) => (
-  <nav className="fixed top-0 left-0 right-0 z-50 bg-white/70 backdrop-blur-xl border-b border-stone-200/50 no-print">
-    <div className="max-w-7xl mx-auto px-6 h-20 flex items-center justify-between">
-      <div className="flex items-center gap-3">
-        <Logo size="sm" />
-        <span className="text-xl md:text-2xl font-semibold serif tracking-tight">Brush of Light</span>
-      </div>
-      <div className="hidden md:flex items-center gap-8 text-xs font-bold text-stone-600 uppercase tracking-widest">
-        <a href="#benefits" className="hover:text-amber-800 transition-colors">The Opportunity</a>
-        <a href="#how-it-works" className="hover:text-amber-800 transition-colors">Our Process</a>
-        <button
-          onClick={() => onNavigate('RESOURCES')}
-          className="hover:text-amber-800 transition-colors"
-        >
-          Partner Resources
-        </button>
-        <button
-          onClick={onOpenPortal}
-          className="bg-stone-900 text-white px-6 py-2.5 rounded-full hover:bg-stone-800 transition-all shadow-lg"
-        >
-          Partner Portal
-        </button>
-      </div>
-    </div>
-  </nav>
-);
+const Navbar = ({ onOpenPortal, onNavigate }: { onOpenPortal: () => void, onNavigate: (page: PageView) => void }) => {
+  const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
+
+  return (
+    <>
+      <nav className="fixed top-0 left-0 right-0 z-50 bg-white/70 backdrop-blur-xl border-b border-stone-200/50 no-print">
+        <div className="max-w-7xl mx-auto px-6 h-20 flex items-center justify-between">
+          <div className="flex items-center gap-3">
+            <Logo size="sm" />
+            <span className="text-xl md:text-2xl font-semibold serif tracking-tight">Brush of Light</span>
+          </div>
+
+          <div className="hidden md:flex items-center gap-8 text-xs font-bold text-stone-600 uppercase tracking-widest">
+            <a href="#benefits" className="hover:text-amber-800 transition-colors">The Opportunity</a>
+            <a href="#how-it-works" className="hover:text-amber-800 transition-colors">Our Process</a>
+            <button
+              onClick={() => onNavigate('RESOURCES')}
+              className="hover:text-amber-800 transition-colors"
+            >
+              Partner Resources
+            </button>
+            <button
+              onClick={onOpenPortal}
+              className="bg-stone-900 text-white px-6 py-2.5 rounded-full hover:bg-stone-800 transition-all shadow-lg"
+            >
+              Partner Portal
+            </button>
+          </div>
+
+          <button
+            onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}
+            className="md:hidden p-2 hover:bg-stone-100 rounded-lg transition-colors"
+            aria-label="Toggle menu"
+          >
+            {isMobileMenuOpen ? <X size={24} /> : <Menu size={24} />}
+          </button>
+        </div>
+      </nav>
+
+      {isMobileMenuOpen && (
+        <div className="fixed inset-0 z-40 md:hidden no-print">
+          <div
+            className="absolute inset-0 bg-stone-900/50 backdrop-blur-sm"
+            onClick={() => setIsMobileMenuOpen(false)}
+          />
+          <div className="absolute top-20 left-0 right-0 bg-white border-b border-stone-200 shadow-2xl">
+            <div className="max-w-7xl mx-auto px-6 py-8 space-y-6">
+              <a
+                href="#benefits"
+                onClick={() => setIsMobileMenuOpen(false)}
+                className="block text-sm font-bold text-stone-700 hover:text-amber-800 transition-colors uppercase tracking-widest py-3 border-b border-stone-100"
+              >
+                The Opportunity
+              </a>
+              <a
+                href="#how-it-works"
+                onClick={() => setIsMobileMenuOpen(false)}
+                className="block text-sm font-bold text-stone-700 hover:text-amber-800 transition-colors uppercase tracking-widest py-3 border-b border-stone-100"
+              >
+                Our Process
+              </a>
+              <button
+                onClick={() => {
+                  setIsMobileMenuOpen(false);
+                  onNavigate('RESOURCES');
+                }}
+                className="w-full text-left text-sm font-bold text-stone-700 hover:text-amber-800 transition-colors uppercase tracking-widest py-3 border-b border-stone-100"
+              >
+                Partner Resources
+              </button>
+              <button
+                onClick={() => {
+                  setIsMobileMenuOpen(false);
+                  onOpenPortal();
+                }}
+                className="w-full bg-stone-900 text-white px-6 py-4 rounded-2xl hover:bg-stone-800 transition-all shadow-lg font-bold uppercase tracking-widest text-sm"
+              >
+                Partner Portal
+              </button>
+            </div>
+          </div>
+        </div>
+      )}
+    </>
+  );
+};
 
 const App: React.FC = () => {
   const [isPortalOpen, setIsPortalOpen] = useState(false);
