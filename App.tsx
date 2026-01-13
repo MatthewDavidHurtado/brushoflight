@@ -1,11 +1,11 @@
 
 import React, { useState } from 'react';
-import { 
-  DollarSign, 
-  ArrowRight, 
-  ShieldCheck, 
-  TrendingUp, 
-  Heart, 
+import {
+  DollarSign,
+  ArrowRight,
+  ShieldCheck,
+  TrendingUp,
+  Heart,
   Palette,
   HandHeart,
   X,
@@ -16,9 +16,12 @@ import {
   Building2,
   RotateCcw
 } from 'lucide-react';
+import PrivacyPolicy from './PrivacyPolicy';
+import TermsOfUse from './TermsOfUse';
 
 // --- Types ---
 type OnboardingStep = 'IDENTIFY' | 'WELCOME' | 'AGREEMENT' | 'SUCCESS';
+type PageView = 'HOME' | 'PRIVACY' | 'TERMS';
 
 interface UserData {
   name: string;
@@ -435,11 +438,20 @@ const Navbar = ({ onOpenPortal }: { onOpenPortal: () => void }) => (
 
 const App: React.FC = () => {
   const [isPortalOpen, setIsPortalOpen] = useState(false);
+  const [currentPage, setCurrentPage] = useState<PageView>('HOME');
+
+  if (currentPage === 'PRIVACY') {
+    return <PrivacyPolicy onClose={() => setCurrentPage('HOME')} />;
+  }
+
+  if (currentPage === 'TERMS') {
+    return <TermsOfUse onClose={() => setCurrentPage('HOME')} />;
+  }
 
   return (
     <div className="min-h-screen selection:bg-amber-100 selection:text-amber-900">
       <Navbar onOpenPortal={() => setIsPortalOpen(true)} />
-      
+
       <OnboardingPortal isOpen={isPortalOpen} onClose={() => setIsPortalOpen(false)} />
 
       {/* Landing Page Content */}
@@ -573,8 +585,25 @@ const App: React.FC = () => {
              <div className="flex justify-center mb-12"><Logo size="md" /></div>
              <h2 className="text-white text-4xl font-bold mb-8 serif">Grow Your Business With Beauty.</h2>
              <button onClick={() => setIsPortalOpen(true)} className="bg-white text-stone-900 px-14 py-6 rounded-full font-bold hover:bg-stone-100 shadow-2xl transition-all">Secure Your Territory</button>
-             <div className="mt-20 pt-10 border-t border-white/5 text-[10px] uppercase tracking-widest font-bold">
-                &copy; {new Date().getFullYear()} Brush of Light | Ezelle Art LLC. Wisconsin, USA.
+             <div className="mt-20 pt-10 border-t border-white/5">
+                <div className="flex flex-wrap justify-center gap-6 mb-6">
+                  <button
+                    onClick={() => setCurrentPage('PRIVACY')}
+                    className="text-[11px] uppercase tracking-widest font-bold hover:text-amber-400 transition-colors"
+                  >
+                    Privacy Policy
+                  </button>
+                  <span className="text-white/20">|</span>
+                  <button
+                    onClick={() => setCurrentPage('TERMS')}
+                    className="text-[11px] uppercase tracking-widest font-bold hover:text-amber-400 transition-colors"
+                  >
+                    Terms of Use
+                  </button>
+                </div>
+                <div className="text-[10px] uppercase tracking-widest font-bold">
+                  &copy; {new Date().getFullYear()} Brush of Light | Ezelle Art LLC. Wisconsin, USA.
+                </div>
              </div>
           </div>
         </footer>
